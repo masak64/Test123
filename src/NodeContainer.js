@@ -198,6 +198,12 @@ export default class NodeContainer {
         this.bounds = IS_INPUT
             ? reformatInputBounds(parseBounds(node, scrollX, scrollY))
             : parseBounds(node, scrollX, scrollY);
+
+        if (node.tagName == "svg") {
+            this.bounds.top = 0;
+            this.bounds.left = 0;
+        }
+
         this.curvedBounds = parseBoundCurves(
             this.bounds,
             this.style.border,
@@ -274,6 +280,13 @@ const getImage = (node: HTMLElement | SVGSVGElement, resourceLoader: ResourceLoa
         node instanceof SVGSVGElement
     ) {
         const s = new XMLSerializer();
+        if (node.tagName == "svg") {
+            let style = window.getComputedStyle(node);
+            if (parseFloat(style.left) < 0 && parseFloat(style.top) < 0) {
+                node.style.top = "0px";
+                node.style.left = "0px";
+            }
+        }
         return resourceLoader.loadImage(
             `data:image/svg+xml,${encodeURIComponent(s.serializeToString(node))}`
         );

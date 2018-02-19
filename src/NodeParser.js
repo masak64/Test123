@@ -8,6 +8,8 @@ import TextContainer from './TextContainer';
 import {inlineInputElement, inlineTextAreaElement, inlineSelectElement} from './Input';
 import {inlineListItemElement} from './ListItem';
 import {LIST_STYLE_TYPE} from './parsing/listStyle';
+import {contains} from './Util';
+import {DISPLAY} from './parsing/display';
 
 export const NodeParser = (
     node: HTMLElement,
@@ -63,7 +65,7 @@ const parseNodeTree = (
         ) {
             if (IGNORED_NODE_NAMES.indexOf(childNode.nodeName) === -1) {
                 const container = new NodeContainer(childNode, parent, resourceLoader, index++);
-                if (container.isVisible()) {
+                if (/*container.isVisible()*/ !contains(container.style.display, DISPLAY.NONE) && container.style.opacity > 0) {
                     if (childNode.tagName === 'INPUT') {
                         // $FlowFixMe
                         inlineInputElement(childNode, container);
