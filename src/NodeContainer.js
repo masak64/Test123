@@ -115,6 +115,8 @@ export default class NodeContainer {
         this.index = index;
         this.childNodes = [];
         this.listItems = [];
+
+
         if (typeof node.start === 'number') {
             this.listStart = node.start;
         }
@@ -194,15 +196,25 @@ export default class NodeContainer {
                 );
             });
         }
-        this.image = getImage(node, resourceLoader);
         this.bounds = IS_INPUT
             ? reformatInputBounds(parseBounds(node, scrollX, scrollY))
             : parseBounds(node, scrollX, scrollY);
 
         if (node.tagName == "svg") {
-            this.bounds.top = 0;
-            this.bounds.left = 0;
+            if (node.closest("#map") && !node.classList.contains("icon")) { // pro geometrie v mape
+                this.bounds.top = 0;
+                this.bounds.left = 0;
+            }
+            else if (node.classList.contains("icon")) { // pro scg ikony
+                node.setAttribute("width", this.bounds.width);
+                node.setAttribute("height", this.bounds.height);
+                if ("fill" in style && style.fill != "") {
+                    node.setAttribute("fill", style.fill);
+                }
+            }
         }
+        
+        this.image = getImage(node, resourceLoader);
 
         this.curvedBounds = parseBoundCurves(
             this.bounds,
