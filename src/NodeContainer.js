@@ -201,11 +201,11 @@ export default class NodeContainer {
             : parseBounds(node, scrollX, scrollY);
 
         if (node.tagName == "svg") {
-            if (node.closest("#map") && !node.classList.contains("icon")) { // pro geometrie v mape
+            if (node.ownerDocument.querySelector("#map").contains(node) && (node.getAttribute("class") || "").split(" ").indexOf("icon") == -1) { // pro geometrie v mape
                 this.bounds.top = 0;
                 this.bounds.left = 0;
             }
-            else if (node.classList.contains("icon")) { // pro scg ikony
+            else if ((node.getAttribute("class") || "").split(" ").indexOf("icon") != -1) { // pro scg ikony
                 node.setAttribute("width", this.bounds.width);
                 node.setAttribute("height", this.bounds.height);
                 if ("fill" in style && style.fill != "") {
