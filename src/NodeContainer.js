@@ -166,7 +166,12 @@ export default class NodeContainer {
             zIndex: parseZIndex(position !== POSITION.STATIC ? style.zIndex : 'auto')
         };
 
-        if (this.isTransformed()) {
+        if (this.tagName == "IMG" && this.parent.name == "span.marker-bg-wrapper") { // kvuli markerum a jejich posunu (hlavne .non-active)
+            if (this.style.transform.transform[4] < 0) {
+                this.style.transform.transform[4] = 0;
+            }
+        }
+        else if (this.isTransformed()) {
             // getBoundingClientRect provides values post-transform, we want them without the transformation
             node.style.transform = 'matrix(1,0,0,1,0,0)';
         }
@@ -186,7 +191,7 @@ export default class NodeContainer {
         }
 
         // TODO move bound retrieval for all nodes to a later stage?
-        if (node.tagName === 'IMG') {
+        if (this.tagName === 'IMG') {
             node.addEventListener('load', () => {
                 this.bounds = parseBounds(node, scrollX, scrollY);
                 this.curvedBounds = parseBoundCurves(
@@ -200,12 +205,12 @@ export default class NodeContainer {
             ? reformatInputBounds(parseBounds(node, scrollX, scrollY))
             : parseBounds(node, scrollX, scrollY);
 
-        if (node.tagName == "svg") {
+        if (this.tagName == "svg") {
             if (node.ownerDocument.querySelector("#map").contains(node) && (node.getAttribute("class") || "").split(" ").indexOf("icon") == -1) { // pro geometrie v mape
                 this.bounds.top = 0;
                 this.bounds.left = 0;
             }
-            else if ((node.getAttribute("class") || "").split(" ").indexOf("icon") != -1) { // pro scg ikony
+            else if ((node.getAttribute("class") || "").split(" ").indexOf("icon") != -1) { // pro svg ikony
                 node.setAttribute("width", this.bounds.width);
                 node.setAttribute("height", this.bounds.height);
                 if ("fill" in style && style.fill != "") {
