@@ -214,7 +214,7 @@ export default class NodeContainer {
                 node.setAttribute("width", this.bounds.width);
                 node.setAttribute("height", this.bounds.height);
                 if ("fill" in style && style.fill != "") {
-                    if (style.fill == "rgb(0, 0, 0)") {
+                    if (style.fill == "rgb(0, 0, 0)" || style.fill.indexOf("rgb") < 0) {
                         node.setAttribute("fill", style.color);
                     }
                     else {
