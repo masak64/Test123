@@ -36,7 +36,7 @@ export class Bounds {
 
     constructor(x: number, y: number, w: number, h: number) {
         this.left = Math.round(x);
-        this.top = Math.round(y;
+        this.top = Math.round(y);
         this.width = Math.round(w);
         this.height = Math.round(h);
     }
