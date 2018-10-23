@@ -213,8 +213,9 @@ export default class NodeContainer {
             else if ((node.getAttribute("class") || "").split(" ").indexOf("icon") != -1) { // pro svg ikony
                 node.setAttribute("width", this.bounds.width);
                 node.setAttribute("height", this.bounds.height);
+
                 if ("fill" in style && style.fill != "") {
-                    node.setAttribute("fill", style.fill);
+                    node.setAttribute("fill", style.fill || style.color);
                 }
             }
         }
