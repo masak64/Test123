@@ -35,10 +35,10 @@ export class Bounds {
     height: number;
 
     constructor(x: number, y: number, w: number, h: number) {
-        this.left = x;
-        this.top = y;
-        this.width = w;
-        this.height = h;
+        this.left = Math.round(x);
+        this.top = Math.round(y;
+        this.width = Math.round(w);
+        this.height = Math.round(h);
     }
 
     static fromClientRect(clientRect: ClientRect, scrollX: number, scrollY: number): Bounds {
